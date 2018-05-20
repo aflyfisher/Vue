@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>初识Vue</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script type="text/javascript" src="../src/vue.min.js"></script>
+</head>
+
+<body>
+    <div id="container">
+        <h1>{{name}}</h1>
+        <h4>{{book.name}}</h4>
+        <ul>
+            <li v-for="(item,index) in book">{{item}}</li>
+        </ul>
+    </div>
+    <script type="text/javascript">
+        var app = new Vue({
+            el: document.getElementById("container"), //指定根元素，可以是选择器，也可以是DOM元素
+            data: { //存储数据的地方
+                name: "hello,Vue",
+                book: {
+                    name: "把新交给卢西亚",
+                    price: 12,
+                    pages: 235
+                }
+            }
+        })
+        /* ----------------------------------notes-------------------------- */
+        // Vuejs是一个前端框架，一个mvvm框架，特点：数据的双向绑定，组件化；
+    </script>
+</body>
+
+</html>

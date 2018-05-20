@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>初识Vue</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script type="text/javascript" src="../src/vue.min.js"></script>
+    <script type="text/javascript" src="index.js"></script>
+    <style type="text/css">
+        [v-cloak] {
+            display: none
+        }
+    </style>
+</head>
+
+<body>
+    <div id="container" v-cloak>
+        <h4>{{name}}</h4>
+        <input type="text" v-model="name">
+        <input type="text" v-model="ageArr">
+        <ul>
+            <!-- 一般的循环 -->
+            <li v-for="item in ageArr">{{item}}</li>
+            <!-- 1,2.3 -->
+        </ul>
+        <!-- 带键的循环：数组-->
+        <ul>
+            <li v-for="(item,index) in ageArr">{{item}},{{index}}</li>
+        </ul>
+        <!-- 带键的循环：对象-->
+        <ul>
+            <li v-for="(item,index) in person" :key="index">{{item}},{{index}}</li>
+        </ul>
+        <!-- 可以直接循环包含重复数据的集合，可以通过指定”：key“属性为当前元素绑定唯一key，当更新数据的时候可以重用元素（只更换不一样的部分），效率更高 -->
+        <!-- 可以用template组件将要循环的部分包裹起来，组成一个整体来进行循环 -->
+        <ul>
+            <template v-for="(item,index) in team">
+                <li>{{item.name}}</li>
+                <li>{{item.age}}</li>
+            </template>
+        </ul>
+    </div>
+    <script type="text/javascript">
+        var hehe;
+        console.log(hehe);
+        var app = new Vue({
+            el: "#container",
+            data: {
+                name: "张三",
+                ageArr: [1, 2, 3],
+                person: {
+                    name: "李白",
+                    pride: "诗歌",
+                    sex: "男"
+                },
+                team: [{
+                        name: "万钢",
+                        age: 23
+                    },
+                    {
+                        name: "前进",
+                        age: 09
+                    },
+                    {
+                        name: "后退",
+                        age: 89
+                    },
+                    {
+                        name: "树上",
+                        age: 38
+                    },
+                ]
+            }
+        })
+        // 动态更改数据；
+        app.team.push({
+            name: "河边",
+            age: 34
+        }) //直接更新
+        // 当对数组进行操作的时候，以下方法可以使在v-for中实时体现push() pop() shift() unshift() splice() sort() reverse()
+    </script>
+</body>
+
+</html>
