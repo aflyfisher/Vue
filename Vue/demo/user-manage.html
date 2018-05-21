@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>用户管理</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+    <div id="container">
+        <h3>添加用户</h3>
+        <div class="form">
+            <div class="form-item">
+                <label for="">姓名：</label>
+                <input type="text" v-model="user.name" placeholder="请输入姓名">
+            </div>
+            <div class="form-item">
+                <label for="">年龄：</label>
+                <input type="text" v-model="user.age" placeholder="请输入年龄">
+            </div>
+            <div class="form-item">
+                <label for="">邮箱：</label>
+                <input type="text" v-model="user.email" placeholder="请输入您的邮箱">
+            </div>
+            <div class="btn-con">
+                <button class="add" @click="add">添加</button>
+                <button class="reset" @click = "reset">重置</button>
+            </div>
+        </div>
+        <table class="layui-table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>姓名</th>
+                    <th>年龄</th>
+                    <th>邮箱</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="(item,index) in users">
+                    <td>{{index+1}}</td>
+                    <td>{{item.name}}</td>
+                    <td>{{item.age}}</td>
+                    <td>{{item.email}}</td>
+                    <td>
+                        <button type="button" class="btn btn-large btn-block btn-default" v-on:click="delete1(index)">删除</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <script type="text/javascript"  src="../src/vue.min.js"></script>
+    <script type="text/javascript">
+        var app  = new Vue({
+            el:"#container",
+            data:{
+                user:{
+
+                },
+                users:[
+                    {name:"张三",age:24,email:"1650031406@qq.com"},
+                    {name:"李四",age:18,email:"896523012@qq.com"}
+                ]
+            },
+            methods: {
+                add:function () {
+                    this.users.push(this.user);
+                    this.user = {}
+                },
+                reset:function (){
+                    this.user = {}
+                },
+                delete1:function(index){
+                    this.users.splice(index,1);//必须传参否则，你怎么知道要删除哪个数组元素
+                }
+            }
+        })
+    </script>
+</body>
+</html>
