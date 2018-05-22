@@ -66,7 +66,7 @@
             methods: {
                 add:function () {
                     this.users.push(this.user);
-                    this.user = {}
+                    this.user = {}//this.user是一个指针，指向新的对象，和原来的对象已经断绝了关系了，所以...
                 },
                 reset:function (){
                     this.user = {}
