@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Page Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+    <div id="contaier">
+        <button type="button" class="btn btn-large btn-block btn-default" @click = "getEventObj(event)">{{buttontext}}</button>
+        <input @keydown.enter = "keyFunc">
+        <input @keydown.a = "print">
+    </div>
+    <script type="text/javascript" src="../src/vue.min.js"></script>
+    <script type="text/javascript">
+        var app =  new Vue({
+            el:"#contaier",
+            data:{
+                buttontext:"我是一个按钮"
+            },
+            methods: {
+                getEventObj:function(e){
+                    console.log(e.target.innerText)
+                },
+                keyFunc:function(){
+                    console.log("你刚才按下了enter键！")
+                },
+                print:function(){
+                    console.log("触发了自定义键盘事件！")
+                }
+            }
+        })
+        Vue.config.keyCodes = {
+            a:65
+        }
+    </script>
+</body>
+</html>
