@@ -138,3 +138,42 @@
                 aF1:[65,112]
             }
         ```
+##四、属性的绑定
+语法:`v-bind:attr = “data”`,常用于元素属性的绑定，简写"`:attr = `"
+1.  特殊属性的绑定class;
+    **方式一**:通过变量的形式"`:class = dd`",这里的`dd`是`data`中的数据;
+    ``` html
+        <style>
+            .fcolor{
+                color: red
+            }
+            .fwight{
+                font-weight:700
+            }
+        </style>
+        <p :class = "fontColor">{{btn}}</p>
+        <!-- 只拥有fcolor类名 -->
+    ```
+    ``` javascript
+        data:{
+            btn:"点我一下试试",
+            fontColor:"fcolor",
+            fontWeight:"fwight",
+            classer:{
+                as:true,
+                bs:false,
+                cs:true
+            }
+        }
+    ```
+    **方式二**:通过数组的形式"`:class = [dd,ee]`",将同时拥有`dd`和`ee`所代表的类名;
+    ``` html
+         <p :class = "[fontColor,fontWeight]">{{btn}}</p>
+         <!-- 同时拥有fcolor和fweight的类名 -->
+    ```
+    **方式三**:通过对象的方式:"`:class = {aa:true,bb:true,...}`"这里`aa`和`bb`就是`class`名，结果是将拥有`aa`和`bb`两个类名;（**<font color = red>推荐（因为更加灵活）</font>**）
+    ``` html
+         <p :class = "classer" >{{btn}}</p>
+         <!-- 将拥有类名as，cs，没有bs -->
+    ```
+2. 特殊属性的绑定style(不常用，不再赘述);

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>属性</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script type="text/javascript" src="../src/vue.min.js"></script>
+    <style>
+        .fcolor{
+            color: red
+        }
+        .fweight{
+            font-weight: 700
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <input type="text" v-model="btn" von>
+        <button v-on:click.once="clickf">{{btn}}</button>
+        <p :class = "fontColor">{{btn}}</p>
+        <p :class = "[fontColor,fontWeight]">{{btn}}</p>
+    </div>
+    <script type="text/javascript">
+        var app = new Vue({
+            el:"#container",
+            data:{
+                btn:"点我一下试试",
+                fontColor:"fcolor",
+                fontWeight:"fweight"
+            },
+            methods: {
+                clickf:function(){
+                    alert("呵呵哒")
+                }
+            }
+        })
+    </script>
+</body>
+</html>
