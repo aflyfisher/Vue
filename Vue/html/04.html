@@ -8,9 +8,10 @@
 </head>
 <body>
     <div id="contaier">
-        <button type="button" class="btn btn-large btn-block btn-default" @click = "getEventObj(event)">{{buttontext}}</button>
+        <button type="button" class="btn btn-large btn-block btn-default" @click = "getEventObj('hello',$event)">{{buttontext}}</button>
         <input @keydown.enter = "keyFunc">
         <input @keydown.a = "print">
+        <button v-on:click.middle="getEventObj('hello,你好',$event)">只触发一次</button>
     </div>
     <script type="text/javascript" src="../src/vue.min.js"></script>
     <script type="text/javascript">
@@ -20,8 +21,9 @@
                 buttontext:"我是一个按钮"
             },
             methods: {
-                getEventObj:function(e){
-                    console.log(e.target.innerText)
+                getEventObj:function(message,e){
+                    console.log(e);
+                    console.log(message)
                 },
                 keyFunc:function(){
                     console.log("你刚才按下了enter键！")

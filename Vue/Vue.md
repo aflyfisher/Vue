@@ -70,7 +70,7 @@
         </ul>
     ```
     **3.可以用template组件将要循环的部分包裹起来，组成一个整体来进行循环**，例如：
-    ```html
+    ``` html
         <ul>
             <template v-for="(item,index) in team">
                 <li>{{item.name}}</li>
@@ -97,26 +97,39 @@
     >注意：1.<font color = red>在选项`methods`中定义的函数和方法</font>，访问Vue实例中`data`中的数据的时候必须要通过`this`来访问，而不能直接访问实例数据，函数中的`this`指向Vue实例本身（你懂的）；
 
     <font color = red>获取事件对象:</font>
-     在函数中传参数`e`即可,里面包含了该事件的一些相关信息，比如点击的位置，点击的DOM对象等
+     在函数中传参数`e`即可（调用的时候传入`$event`）,里面包含了该事件的一些相关信息，比如点击的位置，点击的DOM对象等
+     ``` html
+         <button type="button" class="btn btn-large btn-block btn-default" @click = "getEventObj('hello',$event)">{{buttontext}}</button>
+     ```
       ``` javascript
         methods: {
-            getEventObj:function(e){
-                console.log(e.target)
+            getEventObj:function(message,e){
+                console.log(e);
+                console.log(message)
             }
         }
       ```
     <font color = red>事件修饰符:</font>
     1. 阻止事件冒泡:`@click.stop = "方法名"`;
     2. 阻止默认行为:`@click.prevent = "方法名"`;
+    3. 只有e.target是绑定事件的当前元素自身时触发：`@click.self`,点击当前元素的内部子元素不触发
+    4. 只触发一次：`@click.once`
     >注意：事件修饰符可以嵌套（串联）
+
+    <font color = red>鼠标事件修饰符：</font>
+    1. 点击鼠标左键:`@click.left`;
+    2. 点击鼠标中键:`@click.middle`;
+    3. 点击鼠标右键:`@click.right`,一般要结合`.prevent`才行;
     <font color = red>键盘事件：</font>
-    1. 回车：`@keydown.13`或者`@keydown.enter`(注意这里的`13`是键盘码,`enter`是键位别名);
-    2. 方向键“上”：`@keydown.38`或者`@keydown.up`;
-    3. 删除键del：`@keydown.??`或者`@keydown.delete`;
-    4. 自定义键盘事件：例如,
+    1. 回车：`@keyup.13`或者`@keyup.enter`(注意这里的`13`是键盘码,`enter`是键位别名);
+    2. 方向键“上”：`@keyup.38`或者`@keyup.up`;
+    3. 删除键del：`@keyup.??`或者`@keyup.delete`;
+    4. 空格space：`@keyup.space`;
+    5. 总之还有很多...
+    6. 自定义键盘事件：例如,
         ```html
-            <input type ="text" @keydown.a = "print"/>
-            <input type ="text" @keydown.65 = "print"/>
+            <input type ="text" @keyup.a = "print"/>
+            <input type ="text" @keyup.65 = "print"/>
         ```
         ```javascript
             Vue.config.keyCodes = {
