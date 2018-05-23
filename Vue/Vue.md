@@ -108,6 +108,7 @@
     <font color = red>事件修饰符:</font>
     1. 阻止事件冒泡:`@click.stop = "方法名"`;
     2. 阻止默认行为:`@click.prevent = "方法名"`;
+    >注意：事件修饰符可以嵌套（串联）
     <font color = red>键盘事件：</font>
     1. 回车：`@keydown.13`或者`@keydown.enter`(注意这里的`13`是键盘码,`enter`是键位别名);
     2. 方向键“上”：`@keydown.38`或者`@keydown.up`;
