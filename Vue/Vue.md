@@ -150,6 +150,9 @@
             .fwight{
                 font-weight:700
             }
+            .italit{
+                font-style:italic
+            }
         </style>
         <p :class = "fontColor">{{btn}}</p>
         <!-- 只拥有fcolor类名 -->
@@ -163,7 +166,8 @@
                 as:true,
                 bs:false,
                 cs:true
-            }
+            },
+            isTrue:true
         }
     ```
     **方式二**:通过数组的形式"`:class = [dd,ee]`",将同时拥有`dd`和`ee`所代表的类名;
@@ -171,9 +175,15 @@
          <p :class = "[fontColor,fontWeight]">{{btn}}</p>
          <!-- 同时拥有fcolor和fweight的类名 -->
     ```
+    数组里面的对象
+    ``` html
+        <p :class = "[fontColor,fontWeight,{italit:istrue}]">{{btn}}</p>
+        <!-- 将拥有 fcolor、fweight、italit三个类名 -->
+    ```
     **方式三**:通过对象的方式:"`:class = {aa:true,bb:true,...}`"这里`aa`和`bb`就是`class`名，结果是将拥有`aa`和`bb`两个类名;（**<font color = red>推荐（因为更加灵活）</font>**）
     ``` html
          <p :class = "classer" >{{btn}}</p>
          <!-- 将拥有类名as，cs，没有bs -->
     ```
+    **方式四**：通过一个返回对象的计算属性(**<font color = red>常用</font>**)；
 2. 特殊属性的绑定style(不常用，不再赘述);

@@ -13,6 +13,9 @@
         .fweight{
             font-weight: 700
         }
+        .italit{
+            font-style: italic
+        }
     </style>
 </head>
 <body>
@@ -21,6 +24,7 @@
         <button v-on:click.once="clickf">{{btn}}</button>
         <p :class = "fontColor">{{btn}}</p>
         <p :class = "[fontColor,fontWeight]">{{btn}}</p>
+        <p :class = "[fontColor,fontWeight,{italit:}]">{{btn}}</p>
     </div>
     <script type="text/javascript">
         var app = new Vue({
@@ -28,7 +32,8 @@
             data:{
                 btn:"点我一下试试",
                 fontColor:"fcolor",
-                fontWeight:"fweight"
+                fontWeight:"fweight",
+                isTrue:false
             },
             methods: {
                 clickf:function(){
