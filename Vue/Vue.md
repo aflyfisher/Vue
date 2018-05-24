@@ -187,3 +187,32 @@
     ```
     **方式四**：通过一个返回对象的计算属性(**<font color = red>常用</font>**)；
 2. 特殊属性的绑定style(不常用，不再赘述);
+##五、模板
+###5.1 简介
+Vue.js是使用基于html的模板语法，可以将DOM和Vue中的数据绑定起来，其实模板就是`{{}}`,用来进行数据绑定，并显示在页面中
+###5.2 数据绑定的方式
+>注意:在Vue实例的挂载元素上使用 `v-cloak`,将避免出现闪烁的过程，要结合css
++ 双向绑定：使用`v-model`，将数据和表单元素双向绑定起来
++ 单向绑定：
+    1. 使用`{{}}`;
+    2. 使用`v-bind`;
+    3. `v-html`和`v-text`;两者的区别是前者可以识别标签，而后者不能识别（和原生js中的`innerHTML`与`innerText`差不多）
++ 其他指令：
+    1. v-once:数据只绑定一次,也就是说当vue数据发生改变的时候并不会重新渲染
+``` html
+    <!-- 显示为 hello，Vue -->
+    <span>{{msg}}</span>
+    <!-- 显示为 hello，world  -->
+    <span v-once >{{msg}}</span>
+```
+``` javascript
+    var app = new Vue({
+        el:"#container",
+        data:{
+            msg:"hello,world!",
+            vhtml:"<span>张三</span>"
+        }
+    })
+    app.msg = "hello,Vue"
+```
+1. v-pre:不进行渲染，直接原样显示
