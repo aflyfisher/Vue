@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>过滤器</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style lang="" type="text/css">
+        [v-cloak]{
+            display: none
+        }
+        .fontColor{
+            color: red
+        }
+    </style>
+</head>
+<body>
+    <div id="container" v-cloak>
+        <h3 v-bind:class="{fontColor:istrue}">{{msg}}</h3>
+        <input type="text" v-model="num" >
+        <h3>{{num|addZero}}</h3>
+        <h3>{{numFloat|parse(3)}}</h3>
+        <h3>{{msg|toUpperCase}}</h3>
+    </div>
+    <script type="text/javascript" src="../src/vue.js"></script>
+    <script type="text/javascript">
+        // 补零
+        Vue.filter("addZero",function name(value) {
+            return value>9?value:"0"+value
+        });
+        // 保留几位小数
+        Vue.filter("parse",function(value,num){
+            return value.toFixed(num)
+        })
+        var app = new Vue({
+            el:"#container",
+            data:{
+                msg:"hello,world!",
+                istrue:true,
+                num:9,
+                numFloat:123.921312,
+            },
+            filters: {
+                toUpperCase:function(value){
+                    return value.toUpperCase()
+                }
+            }
+        })
+    </script>
+</body>
+</html>
