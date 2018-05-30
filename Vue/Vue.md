@@ -267,3 +267,57 @@ Vue2.0已经没有了内置的过滤器
         }
     })
 ```
+##七、发送ajax请求；
+###7.1简介
+Vue本身不具有ajax请求的能力，需要使用axios等插件来实现，axios是一个基于Promise的HTTP请求客户端，
+用来发送ajax请求，Vue2.0官方推荐使用的，同时不再对vue-resource进行维护和更新
+###7.2使用axios发送ajax请求
+####7.2.1 安装axios并引用；
+npm install axios -s；
+或者直接引用axios源文件；
+####7.2.2 基本用法
+
++ ` axios(options).then(callback).catch(callback)`
+    这里的`then`代表成功的时候的回调函数，`catch`则代表失败的时候回调函数，`options`是一个对象---含有`method`（请求类型）、`url`（请求路径）等选项。
++ `axios.get(url,options)`
+    注意传递参数的方式：
+    1. 直接绑在`url`后面用`&`链接，
+    2. 在`options`对象的`params`选项中
++ `axios.post(url,[data],options)`
+``` html
+    <button v-on:click="send">发送ajax请求</button>
+    <button v-on:click="sendGet">发送Get请求</button>
+```
+``` javascript
+    var app = new Vue({
+        el:"#container",
+        data:{
+            msg:"hello,world!"
+        },
+        methods: {
+            // 基本的axios请求
+            send:function(){
+                axios({
+                    method:"get",
+                    url:"../json/user.json"
+                }).then((result) => {
+                    console.log(result)
+                }).catch((err) => {
+                    console.log(err)
+                });
+            },
+            // 发送get请求，带参数
+            sendGet:function(){
+                axios.get("../json/user.json",{
+                    params:{
+                        id:9527
+                    }
+                }).then((result) => {
+                    console.log(result)
+                }).catch((err) => {
+                    console.log(err)
+                });
+            }
+        }
+    })
+```
