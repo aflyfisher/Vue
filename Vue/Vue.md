@@ -3,7 +3,6 @@
 + 不兼容低版本的额浏览器
 + 前端路由
 + 状态的管理
-+
 + 虚拟DOM
 ##二、起步
 ###1.下载核心库Vue.js
@@ -283,7 +282,6 @@ npm install axios -s；
     注意传递参数的方式：
     1. 直接绑在`url`后面用`&`链接，
     2. 在`options`对象的`params`选项中
-+ `axios.post(url,[data],options)`
 ``` html
     <button v-on:click="send">发送ajax请求</button>
     <button v-on:click="sendGet">发送Get请求</button>
@@ -321,3 +319,12 @@ npm install axios -s；
         }
     })
 ```
++ `axios.post(url,[data],options)`
+axios默认发送数据的时候，数据格式是 Request Payload，并不是我们常用的formData格式，所以参数必须以键值对的形式传参，不能以json形式传参
+传参的方式：
+1. 拼接字符串；
+``` javascript
+    axios.post("../json/user.json","name=张三&age=12").then(callback).catch(callback)
+```
+1. 使用`transformRequest`，在请求发送之前将发送的数据进行转换
+2. 如果是模块化开发，可以使用qs模块进行转换
