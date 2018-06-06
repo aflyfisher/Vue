@@ -328,3 +328,29 @@ axios默认发送数据的时候，数据格式是 Request Payload，并不是�
 ```
 1. 使用`transformRequest`，在请求发送之前将发送的数据进行转换
 2. 如果是模块化开发，可以使用qs模块进行转换
+###7.3使用vue-resource发送跨域请求
+####7.3.1 安装vue-resurce安装并引用；
+>cnpm install vue-resource -s;
+####7.3.2 基本用法
+>使用this.$http发送请求，详细用法请参考官网或者github;
+1. `this.$http.get(url,option)`;
+2. `this.$http.jsonp(url,option)`
+3. ...
+例如:
+``` javascript
+    methods: {
+        sendAjax:function(){
+            // 这里的this指向的是Vue实例
+            this.$http.jsonp(url,{
+                params:{//参数
+                    word:"abs"
+                }
+                //除了params对象（传参），还有其他的参数，要根据需要
+            }).then((result) => {
+                console.log(result)
+            }).catch((err) => {
+                console.log(err)
+            });
+        }
+    }
+```
