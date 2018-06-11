@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Vue生命周期</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+    <div id="container">
+        <h2>{{name}}</h2>
+        <button @click="updateData">更新数据</button>
+        <button @click="destroy">销毁实例</button>
+    </div>
+    <script type="text/javascript" src="../src/vue.js"></script>
+    <script type="text/javascript">
+        var app = new Vue({
+            el:"#container",
+            data:{
+                name:"我出来了！"
+            },
+            beforeCreate:function(){//不常用，还没观测数据呢，要其何用？？
+                alert("Vue实例已经创建完成，还未进行数据的观测以及事件的配置")
+                // 实例创建完成，但还没开始监视数据与事件
+            },
+            created:function () {//常用,常用于数据的初始化
+                alert("实例已经创建完成，并且已经进行数据的观测和事件的配置")
+            },
+            beforeMount:function () {
+                alert("模板编译之前，还没挂载到元素")
+            },
+            mounted:function () {//常用
+                alert("模板编译之后，此次才会渲染界面，才能在页面上看到数据的展示")
+            },
+            beforeUpdate:function () {
+                alert("实例更新之前")
+            },
+            updated:function () {
+                alert("组件更新之后")
+            },
+            beforeDestroy:function () {
+                alert("实例销毁之前")
+            },
+            destroyed:function () {
+                alert("实例销毁之后")
+            },
+            methods: {
+                updateData:function(){
+                    this.name = "我被更新啦"
+                    // 会调用beforeUpdate和updated两个钩子函数
+                },
+                destroy:function(){
+                    this.$destroy()
+                    // 会调用beforeDestroy和destroyed两个钩子函数
+                }
+            }
+        })
+    </script>
+</body>
+</html>

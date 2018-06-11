@@ -354,3 +354,56 @@ axios默认发送数据的时候，数据格式是 Request Payload，并不是�
         }
     }
 ```
+##八.Vue的生命周期
+Vue实例从创建到销毁的过程，称之为Vue实例的**生命周期**，共有八个阶段:
+1. `beforeCreate`：Vue实例已经创建完成，还未进行数据的观测以及事件的配置
+2. `created`：实例已经创建完成，并且已经进行数据的观测和事件的配置<font color = red>（常用，用于初始化数据）</font>
+3. `beforeMount`：模板编译之前，还没挂载到元素
+4. `mounted`：已经完成编译，并且完成了挂载，也就是说此时才会渲染页面，进行数据的展示<font color = red>（常用）</font>
+5.` beforeUpdate`：在实例更新之前
+6. `updated`:实例更新之后
+7. `beforeDestroy`：实例销毁之前
+8. `destroyed`：实例销毁之后
+``` javascript
+    var app = new Vue({
+        el:"#container",
+        data:{
+            name:"我出来了！"
+        },
+        beforeCreate:function(){//不常用，还没观测数据呢，要其何用？？
+            alert("Vue实例已经创建完成，还未进行数据的观测以及事件的配置")
+            // 实例创建完成，但还没开始监视数据与事件
+        },
+        created:function () {//常用,常用于数据的初始化
+            alert("实例已经创建完成，并且已经进行数据的观测和事件的配置")
+        },
+        beforeMount:function () {
+            alert("模板编译之前，还没挂载到元素")
+        },
+        mounted:function () {//常用
+            alert("模板编译之后，此次才会渲染界面，才能在页面上看到数据的展示")
+        },
+        beforeUpdate:function () {
+            alert("实例更新之前")
+        },
+        updated:function () {
+            alert("组件更新之后")
+        },
+        beforeDestroy:function () {
+            alert("实例销毁之前")
+        },
+        destroyed:function () {
+            alert("实例销毁之后")
+        },
+        methods: {
+            updateData:function(){
+                this.name = "我被更新啦"
+                // 会调用beforeUpdate和updated两个钩子函数
+            },
+            destroy:function(){
+                this.$destroy()
+                // 会调用beforeDestroy和destroyed两个钩子函数
+            }
+        }
+    })
+```
