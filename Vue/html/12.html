@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>计算属性</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+    <div id="container">
+        <!-- 计算属性实现的 -->
+        <h3>{{number}}</h3>
+        <h3>{{numj}}</h3>
+        <!-- 方法实现的 -->
+        <h3>{{numjm()}}</h3>
+        <!-- 原生方法-->
+        <button onclick="fn()">执行方法</button>
+        <!-- get和set -->
+        <h3>{{news}}</h3>
+        <h4>{{school}}</h4>
+        <button v-on:click="changeClass">更改计算属性</button>
+    </div>
+    <script type="text/javascript" src="../src/vue.js"></script>
+    <script type="text/javascript">
+        var app = new Vue({
+            el:"#container",
+            data:{
+                msg:"hello,world!",
+                number:10,
+                news:"临颍县一高"
+            },
+            computed: {
+                numj:function(){
+                    console.log(+new Date())
+                    return this.number-1;
+                },
+                school:{
+                    get:function(){
+                        return this.news+"是我的母校"
+                    },
+                    set:function(){
+                        alert("计算属性new被改变了")
+                    }
+                }
+            },
+            methods: {
+                numjm:function(){
+                    console.log(+new Date())
+                    return this.number-1
+                },
+                changeClass:function(){
+                    this.school = "安徽大学"
+                }
+            }
+        })
+        function fn(){
+            setInterval(function(){
+                console.log(app.numj)//每隔1s访问一次计算属性，date始终不变
+            },1000)
+        }
+        setInterval(function(){
+           console.log(app.numjm())//而每次执行都会更新
+        },1000)
+    </script>
+</body>
+</html>
