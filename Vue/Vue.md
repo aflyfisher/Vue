@@ -458,3 +458,55 @@ Vue实例从创建到销毁的过程，称之为Vue实例的**生命周期**，�
         }
     }
 ```
+##十.Vue实例的属性和方法
+###10.1 属性
+1. `vm.$el` 获取Vue实例挂载的DOM元素
+2. `vm.$data` 获取Vue实例的data属性
+3. `vm.$options`  可以获取Vue实例自定义的属性,例如：vm.$options.name
+``` javascript
+    var app = new Vue({
+        el:"#container",
+        data:{
+            msg:"hello,world!",
+            number:10,
+            news:"临颍县一高"
+        },
+        // 自定义属性
+        name:1212
+    })
+```
+1. `vm.$refs` 可以用来获取所refs属性的元素（只获取其中一个） 如`app.$refs.hello`;
+``` html
+<!-- 只获取最后一个 -->
+    <h4 ref="hello">{{msg}}</h4>
+    <h4 ref="hello">{{msg}}</h4>
+    <h4 ref="hello">{{msg}}</h4>
+    <h4 ref="hello">{{msg}}</h4>
+```
+
+###10.2 方法
+1. `vm.$mount()` 手动挂载Vue实例的挂载元素
+``` javascript
+    var app1 = new Vue({
+        data:{
+            msg:"欢迎回来"
+        }
+    })
+    app1.$mount("#container1")
+```
+2. `vm.$destroy()` 销毁Vue实例(一般并不常用)
+3. `vm.$nextTick()` 等到DOM完成更新后再执行callback，一般在修改数据之后，执行此方法，以便能够获取更新后的DOM
+``` javascript
+    app.news = "临颍县第一高级中学";
+    console.log(app.$refs.school.innerHTML)//临颍县一高
+    // 为啥不是临颍县第一高级中学？？这是因为当执行上面的代码的时候DOM还没更新完，Vue实现响应式并不是数据发生改变之后DOM立即变化，而是按照一定的策略进行的，但是这需要时间！！
+    // 也就是说，执行完  `app.news = "临颍县第一高级中学"`;数据发生了变化，但是立即就会执行下面的代码`console.log(app.$refs.school.innerHTML)`,只不过在执行该行代码的时候DOM还没来得更新完成，所以取到的依然是”临颍县一高“；
+    // 那我要是偏要获取更新后的DOM呢，那就使用该方法了，只需要将第二行代码放到`callback`中
+    app.$nextTick(function(){
+        // 当DOM完成更新后才会执行里面的代码，临颍县第一高级中学
+        console.log(app.$refs.school.innerHTML)
+    })
+```
+1. `vm.$set()`
+2. `vm.$delete()`
+3. `vm.$watch()`
