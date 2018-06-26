@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Vue实例的发方法</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+    <div id="container">
+        {{user.name}}
+        <button @click="changeName">修改属性</button>
+        {{user.height}}
+        <button @click="addAttribute">添加属性</button>
+        <button @click="deleteAttr">删除属性</button>
+        <input v-model="number" type="text" />
+        <input v-model="user.age" type="text" />
+    </div>
+    <script type="text/javascript" src="../src/vue.js"></script>
+    <script type="text/javascript">
+        var app = new Vue({
+            el:"#container",
+            data:{
+                msg:"hello,world!",
+                number:10,
+                news:"你好，2018！",
+                user:{
+                    name:"张三",
+                    age:9
+                }
+            },
+            methods: {
+                changeName:function(){
+                    this.user.name = "李白"
+                },
+                // 添加属性
+                addAttribute:function(){
+                    this.$set(this.user,"height",189)
+                },
+                // 删除属性
+                deleteAttr:function(){
+                    this.$delete(this.user,"name")
+                }
+            }
+        })
+        // vm.$set用来添加对象的属性;
+        // vm.$watch()，监控数据number的值，当变化的时候触发callback函数，方式1
+        app.$watch("user",function(oldValue,newValue){
+            console.log("user的值被改变了")
+        },{deep:true})
+    </script>
+</body>
+</html>

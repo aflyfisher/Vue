@@ -507,6 +507,61 @@ Vue实例从创建到销毁的过程，称之为Vue实例的**生命周期**，�
         console.log(app.$refs.school.innerHTML)
     })
 ```
-1. `vm.$set()`
-2. `vm.$delete()`
-3. `vm.$watch()`
+1. `vm.$set(object,key，value)`
+    给对象类型的数据object，添加属性key,值为value
+2. `vm.$delete(object,key)`
+    删除对象类型的数据object的属性key
+``` javascript
+    var app = new Vue({
+        el:"#container",
+        data:{
+            msg:"hello,world!",
+            number:10,
+            news:"你好，2018！",
+            user:{
+                name:"张三",
+                age:9
+            }
+        },
+        methods: {
+            // 给data中的对象类型的数据user添加属性height，使其值为189
+            addAttribute:function(){
+                this.$set(this.user,"height",189)
+            },
+            // 删除user对象中的name属性
+            deleteAttr:function(){
+                this.$delete(this.user,"name")
+            }
+        }
+    })
+```
+3. `vm.$watch(data,callback[,options])`
+用来观察和监测Vue实例中数据的变化，有两种使用场景:
+``` javascript
+    // 1. 如果被监测的数据data是一个对象，那么一般要这样子使用,
+    app.$watch("user",function(oldValue,newValue){
+        console.log("旧值："+oldvalue+",新值："+newValue)
+    },{deep:true})
+    // options是一个对象，deep：true表示深度监视（只要对象中的属性发生了变化就会执行callback函数）
+
+    // 2.如果被监测的data不是引用类型的值，那么一般这样使用；这里的oldValue是改变前的值，newValue是改变后的值
+    app.$watch("number",function(oldValue,newValue){
+        console.log("旧值："+oldvalue+",新值："+newValue)
+    })
+```
+不过一般而言，可以在Vue实例的`watch`选项中进行数据监视,所以上述代码可以写为：
+``` javascript
+    watch: {//使用vue实例提供的watch选项
+        // 监测number数据
+        number:function(old,newv){
+            console.log("原值是"+old+",新值是"+newv);
+        },
+        //监测user对象
+        user:{
+            handler:function(){
+                console.log("user被改变了");
+            },
+            deep:true//深度监视，当对象中的属性发生变化的时候，就会触发callback
+        }
+    }
+```
