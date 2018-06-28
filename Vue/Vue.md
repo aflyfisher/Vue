@@ -565,3 +565,114 @@ Vue实例从创建到销毁的过程，称之为Vue实例的**生命周期**，�
         }
     }
 ```
+##十一、自定义指令
+分类：Vue自定义指令分为全局自定义指令和局部自定义指令；
+###11.1 自定义全局指令
+> 注意： 使用自定义指令的时候，须要在指令id前面加前缀“v-”，例如本例子就是`v-hello`
+语法:`Vue.directive(指令id,指令对象)`，例如：
+``` javascript
+    Vue.directive("hello",{
+        // 五个钩子函数....
+        // 当自定义指令第一次被绑定到元素的时候会触发此回调函数，只调用一次(因为绑定的行为只有一次嘛)，可以用来执行初始化操作
+        bind:function(){//常用
+            console.log("自定义指令被绑定到了元素中")
+        },
+        inserted:function(){
+            console.log("被绑定的元素插入到DOM中的时候调用")
+        },
+        update:function(){//也常用
+            console.log("当被绑定的元素所在的模板更新的时候调用")
+        },
+        componentUpdated:function(){
+            console.log("当被绑定元素所在的模板完成一次更新周期时调用，也就是更新之后调用")
+        },
+        unbind:function(){
+            console.log("指令和元素解绑的时候调用此函数")
+        }
+    })
+    // Vue实例
+    var app = new Vue({
+        el:"#container",
+        data:{
+            msg:"hello,San!"
+        },
+        methods:{
+            // 执行此方法的时候，会调用`update`的钩子函数，因为绑定元素所在的模板发生了变化
+            changeMsg:function(){
+                this.msg = "hello,萝卜白菜！"
+            }
+        }
+    })
+```
+``` html
+    <h3 v-hello>{{msg}}</h3>
+    <button @click="changeMsg">改变数据</button>
+```
+####11.1.1 自定义指令钩子函数中的参数
+由于在自定义指令中最常用的是`bind`和`update`钩子函数,所以就以此为例，来介绍一下自定义指令中钩子函数中的一些参数（其他阶段的也是如此：）
+``` javascript
+    Vue.directive("world",{
+        bind:function(el,binding){
+            console.log(el);//指令所绑定的DOM元素
+            el.style.color = "green";
+            console.log(binding);//一个对象
+            // binding.value 指令绑定的值 例如 v-world = “msg”；msg时Vue数据
+            console.log(binding.value);//hello,san
+            // binding.expression 指令绑定值的字符串形式，返回”msg“本身
+            console.log(binding.expression),//msg;
+            //binding.args 传递给指令的参数
+            console.log(binding.args)//yu
+             // binding.modifiers 一个包含修饰符的对象 例如:v-world.hehe.haha,,这里的hehe，haha就是修饰符
+            console.log(binding.modifiers)
+            // binding.name    指令的id名，不包含v-前缀；
+        }
+    })
+```
+``` html
+    <h1 v-world = "msg">{{msg}}</h1>
+    <h1 v-world:yu>{{msg}}</h1>
+    <h1 v-world.he.hu.la>{{msg}}</h1>
+```
+####11.1.2 简化写法
+在定义全局指令的时候，有一种简化写法：
+语法：`Vue.directive(指令id,callback)`
+> 这里的`callback`函数，相当于`bind`和`update`的钩子函数
+例如
+``` javascript
+    //  传入一个简单的函数，bind和update的时候调用
+    Vue.directive("hehda",function(el,binding){
+        console.log(1121);
+        console.log(el);
+        console.log(binding)
+    })
+```
+###11.2 局部自定义指令
+语法：使用Vue实例中的`directives`选项，例如
+``` javascript
+    /*
+    定义局部自定义指令
+    */
+    var app = new Vue({
+        el:"#container",
+        data:{
+            msg:"hello,San!"
+        },
+        methods:{
+            // 会调用`update`的钩子函数
+            changeMsg:function(){
+                this.msg = "hello,萝卜白菜！"
+            }
+        },
+        //局部自定义指令
+        directives: {
+            //hahah是指令id名
+            hahah:{
+                // 钩子函数...
+                bind:function(){
+                    // this指向window
+                    alert(this.lili)
+                }
+            }
+        }
+    })
+```

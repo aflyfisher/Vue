@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>自定义指令</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style lang="" type="text/css">
+        [v-cloak]{
+            display: none
+        }
+        #container{
+            color: rgb(0, 255, 106)
+        }
+    </style>
+</head>
+<body>
+    <div id="container" v-cloak>
+        <h3 v-hello>{{msg}}</h3>
+        <button @click="changeMsg">改变数据</button>
+
+        <!-- 带参数的指令 -->
+        <h3 v-world>{{msg}}</h3>
+        <h3 v-hehda>{{msg}}121212</h3>
+        <h3 v-hahah>{{msg}}</h3>
+
+        <h1 v-world = "msg">{{msg}}</h1>
+        <h1 v-world:yu>{{msg}}</h1>
+        <h1 v-world.he.hu.la>{{msg}}</h1>
+    </div>
+    <script type="text/javascript" src="../src/vue.js"></script>
+    <script type="text/javascript">
+    var lili = "小青蛙"
+        // 自定义全局指令
+        /*
+           注意： 使用自定义指令的时候，须要在指令id前面加前缀“v-”，例如本例子就是v-hello
+        */
+        Vue.directive("hello",{
+            // 五个钩子函数....
+            // 当自定义指令第一次被绑定到元素的时候会触发此回调函数，只调用一次(因为绑定的行为只有一次嘛)，可以用来执行初始化操作
+            bind:function(){//常用
+                console.log("自定义指令被绑定到了元素中")
+            },
+            inserted:function(){
+                console.log("被绑定的元素插入到DOM中的时候调用")
+            },
+            update:function(){//也常用
+                console.log("当被绑定的元素所在的模板更新的时候调用")
+            },
+            componentUpdated:function(){
+                console.log("当被绑定元素所在的模板完成一次更新周期时调用，也就是更新之后调用")
+            },
+            unbind:function(){
+                console.log("指令和元素解绑的时候调用此函数")
+            }
+        })
+
+
+        /*
+            自定义指令中钩子函数中的参数
+         */
+
+        Vue.directive("world",{
+            bind:function(el,binding){
+                console.log(el);
+                el.style.color = "green";
+                console.log(binding);
+                console.log(binding.value);//hello,san
+                console.log(binding.expression),//msg;
+                console.log(binding.args)//yu
+                console.log(binding.modifiers)
+                // binding.name    指令的id名，不包含v-前缀；
+                // binding.value 指令绑定的值 例如 v-world = “msg”；msg时Vue数据
+                // binding.expression 指令绑定值的字符串形式，返回”msg“本身
+                //binding.args 传递给指令的参数
+                // binding.modifies 一个包含修饰符的对象 例如:v-world.hehe.haha,,这里的hehe，haha就是修饰符
+            }
+        })
+
+        /*
+            简化的写法，传入简单的函数
+         */
+        //  传入一个简单的函数，bind和update的时候调用
+         Vue.directive("hehda",function(el,binding){
+            console.log(1121);
+            console.log(el);
+            console.log(binding)
+         })
+
+
+
+
+
+         /*
+            定义局部自定义指令
+          */
+        var app = new Vue({
+            el:"#container",
+            data:{
+                msg:"hello,San!"
+            },
+            methods:{
+                // 会调用update的钩子函数
+                changeMsg:function(){
+                    this.msg = "hello,萝卜白菜！"
+                }
+            },
+            directives: {
+                hahah:{
+                    // 钩子函数...
+                    bind:function(){
+                        alert(this.lili)
+                    }
+                }
+            }
+        })
+    </script>
+</body>
+</html>
