@@ -566,6 +566,7 @@ Vue实例从创建到销毁的过程，称之为Vue实例的**生命周期**，�
     }
 ```
 ##十一、自定义指令
+有的情况下，你仍然需要对普通 DOM 元素进行底层操作，这时候就会用到自定义指令
 分类：Vue自定义指令分为全局自定义指令和局部自定义指令；
 ###11.1 自定义全局指令
 > 注意： 使用自定义指令的时候，须要在指令id前面加前缀“v-”，例如本例子就是`v-hello`
@@ -616,7 +617,7 @@ Vue实例从创建到销毁的过程，称之为Vue实例的**生命周期**，�
             console.log(el);//指令所绑定的DOM元素
             el.style.color = "green";
             console.log(binding);//一个对象
-            // binding.value 指令绑定的值 例如 v-world = “msg”；msg时Vue数据
+            // binding.value 指令绑定的值 例如 v-world = “msg”；msg是Vue数据
             console.log(binding.value);//hello,san
             // binding.expression 指令绑定值的字符串形式，返回”msg“本身
             console.log(binding.expression),//msg;
@@ -676,3 +677,20 @@ Vue实例从创建到销毁的过程，称之为Vue实例的**生命周期**，�
         }
     })
 ```
+##12.过渡和动画
+###1.简介
+Vue在插入、更新、和移除DOM的时候，提供了多种不同的方式应用过渡效果，但是其本质上还是使用的是CSS3的原理：
+transition和animation
+### 2.基本用法
+使用`transition`组件,将要执行动画的元素放在该组件内；为该组件定义一个属性`name`,如下:
+``` html
+     <transition name="fade" mode="">
+        <p class="param" v-show="isShow"></p>
+    </transition>
+```
+这里，属性`name`的值`fade`就是定义动画的类名的前缀，如：`fade-enter-active`,`fade-enter`,`fade-leave-active`,`fade-leave`,其中：
+1. `fade-enter`/`fade-leave`:定义(进入/离开)动画开始的时候的第一帧位置（状态），也就是说执行(进入/离开)动画前的那一刻状态；
+2. `fade-enter-active`/`fade-leave-active`: 定义(进入/离开)动画运行阶段（动画结束时的状态），你需要把动画的属性放在这里，如时长，动画执行方式等；
+3. `fade-enter-to`/`fade-leave-to`:定义(进入/离开)动画完成，元素的最终位置(稳定状态)
+不过还是官网的图例比较清晰一点......
+![Vue过渡](img/transition.png)

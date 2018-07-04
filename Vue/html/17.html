@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Page Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type="text/css">
+        *{
+            margin: 0;
+            padding: 0
+        }
+        .param{
+            width: 1000px;
+            height: 500px;
+            background:red;
+        }
+        /* 完成进入动画前，最终要达到的状态（不一定是最后稳定时候的状态）*/
+        .fade-enter-active{
+            transition: all 10s linear;
+            width: 300px;
+            height: 300px;
+            opacity: 1;
+        }
+        /*离开的过程中要完成的过渡效果*/
+        /* 完成离开动画前，最终要达到的状态 */
+        .fade-leave-active{
+            transition: all 10s linear;
+            width: 10px;
+            height: 10px;
+            opacity: 0;
+        }
+        /* 真正开始执行离开动画的时候的初始化状态 */
+        .fade-leave{
+            width: 100px;
+            height: 100px;
+            opacity: 1
+        }
+        /* 在进入的时候:初始化状态（以什么样的状态进入动画） ，需要放到fade-enter-active的后面*/
+ /* 定义了以什么样的状态开始执行进入动画（fade-enter-active）的样式 */
+        .fade-enter{
+            width: 50px;
+            height: 50px;
+            opacity: 0;
+        }
+        /* 到底什么是离开？？，什么是进入？？？ */
+    </style>
+</head>
+<body>
+    <div id="container">
+        <transition name="fade" mode="">
+            <p class="param" v-show="isShow"></p>
+        </transition>
+
+        <button type="button" @click="showHide">消失与隐藏</button>
+    </div>
+    <script type="text/javascript" src="../src/vue.js"></script>
+    <script type="text/javascript">
+        var app = new Vue({
+            el:"#container",
+            data:{
+                name:"张三",
+                isShow:true,
+            },
+            methods: {
+                showHide:function(){
+                    this.isShow = !this.isShow
+                }
+            }
+        })
+    </script>
+</body>
+</html>
