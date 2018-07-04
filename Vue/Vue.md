@@ -725,3 +725,54 @@ transition和animation
 3. `fade-enter-to`/`fade-leave-to`:定义(进入/离开)过渡的结束状态
 不过还是官网的图例比较清晰一点......
 ![Vue过渡](img/transition.png)
+>总结： 简单来说，所谓的进入动画，就是元素从'看不见'到'看得见'的过程,同理，离开动画就是从'看得见'到‘看不见’的过程
+###3.过渡动画的钩子函数
+Vue为执行过渡动画的元素在不同的阶段定义了不同的钩子函数，这里有主要有
+1. `before-enter`:动画进入之前执行
+2. `enter`：动画开始进入时执行
+3. `after-enter`：动画进入之后执行
+4. `before-leave`：动画离开之前执行
+5. `leave`：动画离开时执行
+6. `after-leave`：动画离开后执行
+例如：
+``` html
+     <transition name="fade" mode=""
+        @before-enter = "beforeEnter"
+        @enter = "enter"
+        @after-enter = "afterEnter"
+        @before-leave = "beforeLeave"
+        @leave = "leave"
+        @after-leave = "afterLeave"
+        >
+            <p class="param" v-show="isShow"></p>
+        </transition>
+```
+``` javascript
+ methods: {
+                showHide: function () {
+                    this.isShow = !this.isShow
+                },
+                //
+                beforeEnter: (el) => {
+                    alert("动画进入之前执行");
+                    //这里的参数el是执行动画的DOM元素
+                },
+                enter:function(el){
+                    alert("动画进入时执行")
+                },
+                afterEnter:function(el){
+                    alert("动画进入之后执行");
+                    el.style.background = "yellow"
+                },
+                beforeLeave:function(el){
+                    alert("动画离开之前执行")
+                },
+                leave:function(el){
+                    alert("动画离开时执行")
+                },
+                afterLeave:function(el){
+                    alert("动画离开之后执行");
+                    el.style.background = "red"
+                }
+            }
+```

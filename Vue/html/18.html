@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>动画的钩子函数</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type="text/css">
+        * {
+            margin: 0;
+            padding: 0
+        }
+
+        .param {
+            width: 100px;
+            height: 100px;
+            background: red;
+            /* opacity: 0; */
+        }
+
+        .fade-enter-active {
+            transition: all 5s linear;
+            width: 100px;
+            height: 100px;
+            opacity: 1
+        }
+
+        .fade-leave-active {
+            transition: all 5s linear;
+            width: 0px;
+            height: 0px;
+            opacity: 0
+        }
+
+        .fade-enter {
+            width: 0px;
+            height: 0px;
+            opacity: 0
+        }
+
+        /*  */
+
+        .fade-leave {
+            width: 100px;
+            height: 100px;
+            opacity: 1
+        }
+
+        /* 到底什么是离开？？，什么是进入？？？ */
+    </style>
+</head>
+<body>
+    <div id="container">
+        <transition name="fade" mode=""
+        @before-enter = "beforeEnter"
+        @enter = "enter"
+        @after-enter = "afterEnter"
+        @before-leave = "beforeLeave"
+        @leave = "leave"
+        @after-leave = "afterLeave"
+        >
+            <p class="param" v-show="isShow"></p>
+        </transition>
+
+        <button type="button" @click="showHide">消失与隐藏</button>
+    </div>
+    <script type="text/javascript" src="../src/vue.js"></script>
+    <script type="text/javascript">
+        var app = new Vue({
+            el: "#container",
+            data: {
+                name: "张三",
+                isShow: true,
+            },
+            methods: {
+                showHide: function () {
+                    this.isShow = !this.isShow
+                },
+                //
+                beforeEnter: (el) => {
+                    alert("动画进入之前执行");
+                    //这里的参数el是执行动画的DOM元素
+                },
+                enter:function(el){
+                    alert("动画进入时执行")
+                },
+                afterEnter:function(el){
+                    alert("动画进入之后执行");
+                    el.style.background = "yellow"
+                },
+                beforeLeave:function(el){
+                    alert("动画离开之前执行")
+                },
+                leave:function(el){
+                    alert("动画离开时执行")
+                },
+                afterLeave:function(el){
+                    alert("动画离开之后执行");
+                    el.style.background = "red"
+                }
+            }
+        })
+    </script>
+</body>
+</html>
