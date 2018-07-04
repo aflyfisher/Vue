@@ -688,6 +688,37 @@ transition和animation
         <p class="param" v-show="isShow"></p>
     </transition>
 ```
+``` css
+        .param{
+            width: 100px;
+            height: 100px;
+            background: red;
+            /* opacity: 0; */
+        }
+        .fade-enter-active{
+            transition: all 5s linear;
+            width: 100px;
+            height: 100px;
+            opacity: 1
+        }
+        .fade-leave-active{
+            transition: all 5s linear;
+            width: 0px;
+            height: 0px;
+            opacity: 0
+        }
+        .fade-enter{
+            width: 0px;
+            height: 0px;
+            opacity: 0
+        }
+        /*  */
+        .fade-leave{
+            width: 100px;
+            height: 100px;
+            opacity: 1
+        }
+```
 这里，属性`name`的值`fade`就是定义动画的类名的前缀，如：`fade-enter-active`,`fade-enter`,`fade-leave-active`,`fade-leave`,其中：
 1. `fade-enter`/`fade-leave`:定义(进入/离开)动画开始的时候的第一帧位置（状态），也就是说执行(进入/离开)动画前的那一刻状态；
 2. `fade-enter-active`/`fade-leave-active`: 定义(进入/离开)动画运行阶段（动画结束时的状态），你需要把动画的属性放在这里，如时长，动画执行方式等；
