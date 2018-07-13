@@ -776,3 +776,15 @@ Vue为执行过渡动画的元素在不同的阶段定义了不同的钩子函�
                 }
             }
 ```
+###4.多元素动画
+`<transition>`组件内部只能有一个根元素，如果有多个更元素就不行了，但是如果有多个元素该怎么办呢？
+就是今天要说的`<transition-group>`组件
+###4.1 用法
+``` html
+<!-- 注意要给组件<transition-group>中的每一个根元素绑定唯一的属性key -->
+    <transition-group name="fade" mode="" >
+        <p class="param" v-bind:key="keu" v-show="isShow"></p>
+        <p class="param" v-bind:key="kes" v-show="isShow"></p>
+    </transition-group>
+```
+其他和`<transition>`差不多

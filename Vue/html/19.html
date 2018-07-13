@@ -49,19 +49,14 @@
         /* 到底什么是离开？？，什么是进入？？？ */
     </style>
 </head>
+
 <body>
     <div id="container">
-        <transition name="fade" mode=""
-        @before-enter = "beforeEnter"
-        @enter = "enter"
-        @after-enter = "afterEnter"
-        @before-leave = "beforeLeave"
-        @leave = "leave"
-        @after-leave = "afterLeave"
-        >
-            <p class="param" v-show="isShow"></p>
-            <p class="param" v-show="isShow"></p>
-        </transition>
+        <transition-group name="fade" mode="" @before-enter="beforeEnter" @enter="enter" @after-enter="afterEnter" @before-leave="beforeLeave"
+            @leave="leave" @after-leave="afterLeave">
+            <p class="param" v-bind:key="keu" v-show="isShow"></p>
+            <p class="param" v-bind:key="kes" v-show="isShow"></p>
+        </transition-group>
 
         <button type="button" @click="showHide">消失与隐藏</button>
     </div>
@@ -72,6 +67,8 @@
             data: {
                 name: '张三',
                 isShow: true,
+                keu:1,
+                kes:2
             },
             methods: {
                 showHide: function () {
@@ -82,20 +79,20 @@
                     console.log('动画进入之前执行');
                     // 这里的参数el是执行动画的DOM元素
                 },
-                enter:function(el){
+                enter: function (el) {
                     console.log('动画进入时执行');
                 },
-                afterEnter:function(el){
+                afterEnter: function (el) {
                     console.log('动画进入之后执行');
                     el.style.background = 'yellow';
                 },
-                beforeLeave:function(el){
+                beforeLeave: function (el) {
                     console.log('动画离开之前执行');
                 },
-                leave:function(el){
+                leave: function (el) {
                     console.log('动画离开时执行');
                 },
-                afterLeave:function(el){
+                afterLeave: function (el) {
                     console.log('动画离开之后执行');
                     el.style.background = 'red';
                 }
