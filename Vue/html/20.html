@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>组件</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+    <div id="container">
+        <h3>{{msg}}</h3>
+        <hello-world></hello-world>
+        <hello-msg></hello-msg>
+    </div>
+    <script type="text/javascript" src="../src/vue.js"></script>
+    <script type="text/javascript">
+    // 方式一：创建组件构造器，然后通过构造器创建Vue组件；
+    // 1.通过Vue.extend()创建组件构造器；
+    let ex = Vue.extend({
+        template:'<h2>你好</h2>'
+    });
+    // 2.通过Vue.component(组件名，组件构造器)
+    Vue.component('hello-world', ex);
+    // 方式2 直接创建组件
+    Vue.component('hello-msg',{
+        template:'<h3>我的天啊</h3>'
+    });
+
+    let app = new Vue({
+        el:'#container',
+        data:{
+            msg:'i am back!'
+        }
+    });
+    </script>
+</body>
+
+</html>
