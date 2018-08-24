@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>子组件向父组件传递数据</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type="text/css">
+        [v-cloak] {
+            display: none
+        }
+    </style>
+</head>
+<body>
+    <div id="container" v-cloak>
+        <h3>{{msg}}</h3>
+        <my-hello></my-hello>
+    </div>
+    <!-- 父组件my-hello模板 -->
+    <template id="hello">
+        <div>
+            <h3>{{message}}</h3>
+            <!-- 刚开始没有,当点击按钮后就有了 -->
+            <h1>{{send}}</h1>
+            <!-- 同上 -->
+            <h1>{{user.name}}</h1>
+            <!-- 子组件只能在父组件中使用 -->
+            <!-- 在父组件中侦听子组件抛出的自定义事件,并定义一个getData方法来接收数据 -->
+            <my-world v-bind:message="message" v-on:load="getData"></my-world>
+        </div>
+    </template>
+    <!-- 子组件模板 -->
+    <template id="world">
+        <div>
+            <h1>{{send}}</h1>
+            <hr />
+            <h3>{{message}}</h3>
+            <button @click="sendData()">发送子组件中的数据给父组件my-hello</button>
+        </div>
+    </template>
+    <script type="text/javascript" src="../src/vue.js"></script>
+    <script type="text/javascript">
+        let app = new Vue({ // 根组件
+            el: '#container',
+            data: {
+                msg: 'hehe',
+                flag: true
+            },
+            components: {
+                'my-hello':{// 父组件
+                    template:'#hello',
+                    data () {
+                        return {
+                            message:'你好，我是Vue',
+                            send:'',
+                            user:''
+                        };
+                    },
+                    methods: {
+                        // 3. 并在父组件中定义一个方法，来接收子组件传递过来的数据
+                        'getData':function(send,user){
+                            this.send = send;
+                            this.user = user;
+                        }
+                    },
+                    components: {
+                        'my-world':{ // 子组件
+                            template:'#world',
+                            data () {
+                                return {
+                                    send:'byIphone',
+                                    user:{
+                                        name:'张三',
+                                        age:13,
+                                        sex:'男'
+                                    }
+                                };
+                            },
+                            props:['message'],
+                            methods: {
+                                sendData:function(){
+ // 1.在子组件中使用`vm.$emit(事件名,数据)`，触发一个自定义事件，事件名随意，这里的vm是当前的子组件
+                                    // 在这里的this 指向的是当前子组件本身
+                                    console.log(this);
+                                    this.$emit('load',this.send,this.user)
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

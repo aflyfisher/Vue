@@ -875,3 +875,257 @@ html部分：
         </ul>
     </template>
 ```
+###13.4 动态组件
+使用`<component is = ""></component>`组件，多个组件使用同一个挂载点（`component`组件所在位置），然后动态地在他们之间切换。例如：
+``` javascript
+    Vue.component('my-name', {
+            template: '#just',
+            data: function () {
+                return {
+                    nameArr: ['Tom', 'Jack', 'Load', 'John'],
+                    animal:'cat'
+                };
+            }
+        });
+        // 组件2
+        Vue.component('my-earth', {
+            template:'<h2>{{name}}</h2>',
+            data:function(){
+                return {
+                    name:'地球'
+                };
+            }
+        });
+        // 局部组件
+        let app = new Vue({
+            el: '#container',
+            data: {
+                msg: 'hehe',
+                flag:true,
+                flage:'my-earth'
+            },
+            methods:{
+                showcompo:function(){
+                    this.flag = !this.flag;
+                }
+            }
+        })
+        // 现在flage是my-earth，所以会显示id为my-earth的组件，然后通过改变flage的值来显示不同的组件
+```
+``` html
+     <component :is="flage"></component>
+```
+通过属性`is`绑定组件id，来确定那个组件显示,那个组件不显示。
+`keep-alive`组件，可以将切换出去的组件（不显示的组件，非活动组件）缓存起来，保存状态（不用重新渲染组件），默认每次切换都会销毁和重新创建组件,一旦这样子做，会提高效率的；
+``` html
+    <keep-alive>
+          <component :is="flage"></component>
+     </keep-alive>
+     <!-- 缓存，component组件中的所有待显示的自=组件 -->
+```
+### 13.5 父子组件和组件间数据的传递
+#### 13.5.1 父子组件
+在一个组件内部定义另一个组件,称为父子组件
+>子组件只能在父组件内部使用
+``` javascript
+     let app = new Vue({// 根组件
+            el: '#container',
+            data: {
+                msg: 'hehe',
+                flag:true,
+                flage:'my-earth'
+            },
+            components: {
+                'my-hello':{// 父组件
+                    template:'#hello',
+                    data () {
+                        return {
+                            name:'李白',
+                            user:{id:'9527',name:'唐伯虎',age:25},
+                            address:'陕西省西安市雁塔区锦业二路付村花园'
+                        };
+                    },
+                    components: {
+                        'my-world':{// 子组件
+                            template:'#world',
+                            data () {
+                                return {
+                                    empire:'唐'
+                                };
+                            }
+                        }
+                    }
+                }
+            }
+        })
+```
+``` html
+     <div id="container" v-cloak>
+        <h3>{{msg}}</h3>
+        <my-hello></my-hello>
+    </div>
+    <!-- 父组件模板 -->
+    <template id="hello">
+        <div>
+            <h3>我是hello，一个父组件</h3>
+            <my-world></my-world>
+        </div>
+    </template>
+    <!-- 子组件模板 -->
+    <template id="world">
+        <div>
+            <h3>{{empire}}</h3>
+        </div>
+    </template>
+```
+默认情况下，子组件无法访问父组件中的数据，每一个组件的作用域（无论是什么关系）是独立的；
+#### 13.5.2 组件间数据的通信；
+#####13.5.2.1 子组件访问父组件中的数据；
+1. 在调用子组件（使用子组件）的时候，绑定(`v-bind`)想要获取的父组件的数据
+2. 在子组件中内部，使用`props`选项声明想要获取的数据（数组或对象），也就是来接受来自父组件上的数据；例如：
+``` html
+    <!-- 父组件模板 -->
+    <template id="hello">
+        <div>
+            <h3>我是hello，一个父组件</h3>
+            <h3>这些是父组件的数据：{{name}},{{address}}</h3>
+            <!-- step1 :在调用自组建时候，绑定想要获取的父组件的数据 -->
+            <!-- 在这个div内部所有的部分（包括子组件本身）都属于父组件，所以当然可以访问父组件数据 -->
+             <my-world v-bind:name="name" :address = "address"></my-world>
+        </div>
+    </template>
+    <!-- 子组件模板 -->
+    <template id="world">
+        <div>
+            <h3>{{empire}}</h3>
+            <!-- 拿到了父组件中的数据name -->
+            <h1>{{name}}</h1>
+        </div>
+    </template>
+```
+``` javascript
+    components: {
+                        'my-world':{// 子组件
+                            template:'#world',
+                            data () {
+                                return {
+                                    empire:'唐'
+                                };
+                            },
+                            //  step2 使用props选项 声明想要获取的数据,在这里是逍遥获取数据name和address
+                            props:['name','address']
+                        }
+                    }
+```
+`props`也可以是对象，用来配置高级的设置，如类型的判断，数据校验，默认值等
+``` javascript
+    'my-computer':{// 子组件
+        template:'#computer',
+        data () {
+            return {
+                page:3
+            };
+        },
+        props:{
+            address:String, // 指定类型 必须是字符串
+            ser:{
+                type:Object,// 数据user的类型必须是对象,如果不是对象就会报错
+                required:true, // 必须要有的参数
+                default:function(){
+                    return {
+                        name:'张三',
+                        age:3
+                    }
+                }
+            }
+        }
+    }
+```
+``` html
+     <my-computer v-bind:user="user" v-bind:address="address"></my-computer>
+```
+总结：
+1. 父组件通过props向下传递数据给子组件，
+2. 组件中的数据有三种形式，data，计算属性和props传递
+##### 13.5.2.2 父组件访问子组件中的数据；
+1. 在子组件中使用`vm.$emit(事件名,数据)`，触发一个自定义事件，事件名随意，这里的`vm`是当前的子组件
+2. 父组件在使用子组件的地方（写子组件的地方）侦听子组件扔出来的自定义事件,侦听到之后,并在父组件中定义一个方法，来接收子组件传递过来的数据;
+总之：首先子组件通过一个事件events给父组件发送消息，实际上就是子组件把自己的数据发送父组件;
+例如:
+``` javascript
+    let app = new Vue({ // 根组件
+            el: '#container',
+            data: {
+                msg: 'hehe',
+                flag: true
+            },
+            components: {
+                'my-hello':{// 父组件
+                    template:'#hello',
+                    data () {
+                        return {
+                            message:'你好，我是Vue',
+                            send:'', //首先要预定义
+                            user:''// 同上
+                        };
+                    },
+                    methods: {
+                        // 3. 并在父组件中定义一个方法，来接收子组件传递过来的数据
+                        'getData':function(send,user){
+                            this.send = send;
+                            this.user = user;
+                        }
+                    },
+                    components: {
+                        'my-world':{ // 子组件
+                            template:'#world',
+                            data () {
+                                return {
+                                    send:'byIphone',
+                                    user:{
+                                        name:'张三',
+                                        age:13,
+                                        sex:'男'
+                                    }
+                                };
+                            },
+                            props:['message'],
+                            methods: {
+                                sendData:function(){
+ // 1.在子组件中使用`vm.$emit(事件名,数据)`，触发一个自定义事件，事件名随意，这里的vm是当前的子组件
+                                    // 在这里的this 指向的是当前子组件本身
+                                    console.log(this);
+                                    this.$emit('load',this.send,this.user)
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        });
+```
+``` html
+
+    <!-- 父组件my-hello模板 -->
+    <template id="hello">
+        <div>
+            <h3>{{message}}</h3>
+            <!-- 刚开始没有,当点击按钮后就有了 -->
+            <h1>{{send}}</h1>
+            <!-- 同上 -->
+            <h1>{{user.name}}</h1>
+            <!-- 子组件只能在父组件中使用 -->
+            <!-- 在父组件中侦听子组件抛出的自定义事件,并定义一个getData方法来接收数据 -->
+            <my-world v-bind:message="message" v-on:load="getData"></my-world>
+        </div>
+    </template>
+    <!-- 子组件模板 -->
+    <template id="world">
+        <div>
+            <h1>{{send}}</h1>
+            <hr />
+            <h3>{{message}}</h3>
+            <button @click="sendData()">发送子组件中的数据给父组件my-hello</button>
+        </div>
+    </template>
+```
