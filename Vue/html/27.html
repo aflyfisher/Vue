@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>非父子组件之间的通信</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type="text/css">
+        [v-cloak] {
+            display: none
+        }
+    </style>
+</head>
+<body>
+    <div id="container" v-cloak>
+        <my-task></my-task>
+    </div>
+    <!-- 父组件模板 -->
+    <template id="tasks">
+        <div>
+            <h3>{{timeLine}}</h3>
+            <my-house></my-house>
+            <my-book></my-book>
+            <my-computer></my-computer>
+        </div>
+    </template>
+    <!-- 子组件1模板 -->
+    <template id="house">
+        <div>
+            <h3>子组件1：{{floor}}</h3>
+        </div>
+    </template>
+    <!--子组件2模板  -->
+    <template id="book">
+        <div>
+            <h3>子组件2：{{bookname}}</h3>
+            <button @click="sendData">发送数据</button>
+        </div>
+    </template>
+    <!-- 子组件3 模板-->
+    <template id="computer">
+        <div>
+            <h3>子组件3：{{computer}}</h3>
+            <h3>书籍</h3>
+        </div>
+    </template>
+    <script type="text/javascript" src="../src/vue.js"></script>
+    <script type="text/javascript">
+        // 定义一个空的Vue实例，作为中央事件总线
+        let bus = new Vue();
+        let app = new Vue({ // 根组件
+            el:'#container',
+            data:{
+                task:'完成数据的展示',
+                house:{
+                    address:'陕西省西安市雁塔区锦业路一号',
+                    price:'13000',
+                    area:'124㎡'
+                }
+            },
+            components: {
+                'my-task':{// 父组件
+                    template:'#tasks',
+                    data () {
+                        return {
+                            timeLine:'明天'
+                        };
+                    },
+                    components: {
+                        'my-house':{ // 子组件1
+                            template:'#house',
+                            data () {
+                                return {
+                                    floor:28
+                                };
+                            }
+                        },
+                        'my-book':{ // 子组件2
+                            template:'#book',
+                            data () {
+                                return {
+                                    bookname:'愿你迷路到我身边'
+                                };
+                            },
+                            // 定义一个放方法，通过中央事件总线bus触发一个自定义事件data-send,将数据bookname抛出去
+                            methods: {
+                                'sendData':function(){
+                                    bus.$emit('data-send',this.bookname);
+                                }
+                            }
+                        },
+                        'my-computer':{
+                            template:'#computer',
+                            data () {
+                                return {
+                                    computer:'lenovo电脑',
+                                    bookname:''
+                                };
+                            },
+                            // 侦听自定义事件,当模板编译完成后执行
+                            mounted:function(){
+                                let _this = this;// 这个this才代表了组件 'my-computer'本身
+                                //  通过中央事件总线bus，来监听跑出来的自定义事件
+                                bus.$on('data-send',function(bookname){
+                                    // 里面的this是bus实例，所以要在外部定义一个变量来保存外部的this
+                                    _this.bookname = bookname;
+                                });
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

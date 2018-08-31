@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>单项数据流</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type="text/css">
+        [v-cloak] {
+            display: none
+        }
+    </style>
+</head>
+<body>
+    <div id="container" v-cloak>
+        <h3>我的公司是：{{company}}</h3>
+        <my-hello></my-hello>
+    </div>
+    <!-- 父组件模板 -->
+    <template id="hello">
+        <div>
+            <h1>我的书籍:{{book.name}}</h1>
+            <!-- step1：将数据对象绑定给子组件 -->
+            <my-world v-bind:book="book"></my-world>
+        </div>
+    </template>
+    <!-- 子组件模板 -->
+    <template id="world">
+        <div>
+            <h1>{{book.name}}</h1>
+            <button @click="changeMember">改变数据</button>
+        </div>
+    </template>
+    <script type="text/javascript" src="../src/vue.js"></script>
+    <script type="text/javascript">
+        let app = new Vue({ // 爷爷组件 （根组件）
+            el:'#container',
+            data:{
+                company:'思安新能源股份有限公司'
+            },
+            components: {
+                'my-hello':{ // 父组件
+                    template:'#hello',
+                    data () {
+                        return {
+                            // 父组件中的对象数据
+                            book:{
+                                name:'愿你迷路到我身旁',
+                                author:'蕊希',
+                                price:'💴20'
+                            }
+                        };
+                    },
+                    components: {
+                        'my-world':{ // 子组件
+                            template:'#world',
+                            // step2：通过props获取父父组件上的数据
+                            props: ['book'],// 拿到了父组件上数据book，
+                            methods: {
+                                // step3:该改变props数据的属性
+                                changeMember:function(){
+                                    this.book.name = '总要习惯一个人';
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
