@@ -1333,3 +1333,44 @@ Way1:
             }
         });
 ```
+####15.5.2.5 slot内容分发
+本意：位置，槽；
+Vue：用于获取组件中的原内容（组件内部的内容），
+方法：
+1. 对于单`slot`组件，只需要在组件内部的合适地方写下`slot`标签即可（也就是原内容将来要呈现的位置），例如：
+``` html
+    <div id="container">
+        <!-- 组件,其中的原内容就是"你好"两个字 -->
+        <my-hello>你好</my-hello>
+    </div>
+    <template id="hello">
+        <div>
+            <h3>{{lesson}}</h3>
+            <!-- 只需要在组件内部合适的地方插入组件slot组件，在slot的位置就会出现原内容 -->
+            <slot>如果没有原内容就会显示这一段文字</slot>
+        </div>
+    </template>
+```
+2. 对于具名`slot`，如果原内容的结构比较复杂，那需要用到具名slot了：
+  + 对于要分发的原内容用`slot`属性进行分组，例如：`slot = "bikc"`;
+  + 在组件的模板内部的合适使用slot组件，为其指定name属性，例如:`slot = "bikc"`,
+  + 渲染出来的效果就是，在模板中slot出现的位置显示对应的原内容；
+``` html
+    <!-- 具名slot -->
+    <my-world>
+        <!-- 原内容1 -->
+        <div  slot="title">这是一本书 </div>
+        <!-- 原内容2 -->
+        <div slot="house">我最喜欢的一本书</div>
+    </my-world>
+
+     <template id="world">
+        <div>
+            <slot name = "title"></slot>
+            <!-- 获取的内容将是属性slot值为title的原素，所代表的内容 -->
+            <h2>{{book}}</h2>
+            <slot name = "house"></slot>
+            <!-- 同上 -->
+        </div>
+    </template>
+```

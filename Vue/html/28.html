@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>slot数据分发</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen"/>
+</head>
+<body>
+    <!-- 内容分发 -->
+    <div id="container">
+        <my-hello>你好</my-hello>
+        <!-- 具名slot -->
+        <my-world>
+            <div id="title" slot="title">这是一本书 </div>
+            <div id="house" slot="house">我最喜欢的一本书</div>
+        </my-world>
+    </div>
+    <template id="hello">
+        <div>
+            <h3>{{lesson}}</h3>
+            <!-- 只需要在组件内部合适的地方插入组件slot组件， -->
+            <slot>如果没有原内容就会显示这一段文字</slot>
+        </div>
+    </template>
+    <template id="world">
+        <div>
+            <slot name = "title"></slot>
+            <!-- 获取的内容将是属性slot值为title的元素 -->
+            <h2>{{book}}</h2>
+            <slot name = "house"></slot>
+            <!-- 同上 -->
+        </div>
+    </template>
+    <script type="text/javascript" src="../src/vue.js" ></script>
+    <script type="text/javascript">
+        let app = new Vue({
+            el:'#container',
+            data:{
+                msg:'2018开学第一课'
+            },
+            components: { // 组件
+                'my-hello':{
+                    template:'#hello',
+                    data () {
+                        return {
+                            lesson:'开学第一课感想'
+                        };
+                    }
+                },
+                'my-world':{ // 具名slot
+                    template:'#world',
+                    data () {
+                        return {
+                            book:'愿你迷路到我身旁'
+                        };
+                    }
+                }
+            }
+        });
+        Vue.components
+    </script>
+</body>
+</html>
