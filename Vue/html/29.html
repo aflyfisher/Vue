@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Vue路由</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen"/>
+    <style type="text/css">
+        .active{
+            color: red;
+            font-size: 20px
+        }
+    </style>
+</head>
+<body>
+    <!-- 路由 -->
+    <div id="container">
+        <!-- 使用router-link 定义导航，to属性指定连接url -->
+        <div id="routerLink">
+            <router-link to="/main">主页</router-link>
+            <router-link to="/news">新闻</router-link>
+        </div>
+        <!-- router-view组件用来定义路由内容 -->
+        <div id="content">
+            <router-view></router-view>
+        </div>
+    </div>
+    <script type="text/javascript" src="../src/vue.js" ></script>
+    <script type="text/javascript" src="../src/vue-router.js"></script>
+    <script type="text/javascript">
+        // 1. 定义组件
+        let home = {
+            template:'<h2>我是主页</h2>'
+        };
+        let news = {
+            template:'<h2>我是新闻</h2>'
+        };
+        // 2.配置路由
+        let routes = [
+            {
+                path:'/home',
+                component:home
+            },
+            {
+                path:'/news',
+                component:news
+            },
+            { path: '*', redirect: '/home'} // 路由重定向,默认显示/home，连接到的内容
+        ];
+        // 3.创建路由实例；
+        const router = new VueRouter({
+            routes: routes,
+            // mode:'history', // 定义路由模式,默认是hash;
+            linkActiveClass:'active' // 定义连接激活时候的样式类
+        })
+        // 4.创建根实例，并将路由实例挂载到Vue实例上
+        let app = new Vue({
+            el:'#container',
+            data:{
+                book:'总要习惯一个人'
+            },
+            methods: {
+                'change':function(){
+                    console.log(this.book);
+                }
+            },
+            router:router // 注入路由
+        });
+    </script>
+</body>
+</html>

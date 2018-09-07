@@ -1,4 +1,5 @@
 /** layui-v1.0.9_rls MIT License By http://www.layui.com */
+
 .layui-laypage a, a {
 	text-decoration: none
 }
@@ -819,7 +820,8 @@ a cite {
 	color: #fff;
 	overflow: hidden;
 	white-space: nowrap;
-	text-overflow: ellipsis
+	text-overflow: ellipsis;
+	color: #386ac3
 }
 
 .layui-form-checkbox:hover span {
@@ -2017,22 +2019,18 @@ body .layui-util-face .layui-layer-content {
 	from {
 		-webkit-transform: rotate(0)
 	}
-
 	to {
 		-webkit-transform: rotate(360deg)
 	}
-
 }
 
 @keyframes layui-rotate {
 	from {
 		transform: rotate(0)
 	}
-
 	to {
 		transform: rotate(360deg)
 	}
-
 }
 
 .layui-anim-rotate {
@@ -2049,12 +2047,10 @@ body .layui-util-face .layui-layer-content {
 		-webkit-transform: translate3d(0, 100%, 0);
 		opacity: .3
 	}
-
 	to {
 		-webkit-transform: translate3d(0, 0, 0);
 		opacity: 1
 	}
-
 }
 
 @keyframes layui-up {
@@ -2062,12 +2058,10 @@ body .layui-util-face .layui-layer-content {
 		transform: translate3d(0, 100%, 0);
 		opacity: .3
 	}
-
 	to {
 		transform: translate3d(0, 0, 0);
 		opacity: 1
 	}
-
 }
 
 .layui-anim-up {
@@ -2080,12 +2074,10 @@ body .layui-util-face .layui-layer-content {
 		-webkit-transform: translate3d(0, 30px, 0);
 		opacity: .3
 	}
-
 	to {
 		-webkit-transform: translate3d(0, 0, 0);
 		opacity: 1
 	}
-
 }
 
 @keyframes layui-upbit {
@@ -2093,12 +2085,10 @@ body .layui-util-face .layui-layer-content {
 		transform: translate3d(0, 30px, 0);
 		opacity: .3
 	}
-
 	to {
 		transform: translate3d(0, 0, 0);
 		opacity: 1
 	}
-
 }
 
 .layui-anim-upbit {
@@ -2111,12 +2101,10 @@ body .layui-util-face .layui-layer-content {
 		opacity: .3;
 		-webkit-transform: scale(.5)
 	}
-
 	100% {
 		opacity: 1;
 		-webkit-transform: scale(1)
 	}
-
 }
 
 @keyframes layui-scale {
@@ -2125,13 +2113,11 @@ body .layui-util-face .layui-layer-content {
 		-ms-transform: scale(.5);
 		transform: scale(.5)
 	}
-
 	100% {
 		opacity: 1;
 		-ms-transform: scale(1);
 		transform: scale(1)
 	}
-
 }
 
 .layui-anim-scale {
@@ -2144,17 +2130,14 @@ body .layui-util-face .layui-layer-content {
 		opacity: .5;
 		-webkit-transform: scale(.5)
 	}
-
 	80% {
 		opacity: .8;
 		-webkit-transform: scale(1.1)
 	}
-
 	100% {
 		opacity: 1;
 		-webkit-transform: scale(1)
 	}
-
 }
 
 @keyframes layui-scale-spring {
@@ -2163,19 +2146,16 @@ body .layui-util-face .layui-layer-content {
 		-ms-transform: scale(.5);
 		transform: scale(.5)
 	}
-
 	80% {
 		opacity: .8;
 		-ms-transform: scale(1.1);
 		transform: scale(1.1)
 	}
-
 	100% {
 		opacity: 1;
 		-ms-transform: scale(1);
 		transform: scale(1)
 	}
-
 }
 
 .layui-anim-scaleSpring {
@@ -2189,21 +2169,18 @@ body .layui-util-face .layui-layer-content {
 		overflow: hidden;
 		white-space: nowrap
 	}
-
 	.layui-form-item .layui-inline {
 		display: block;
 		margin-right: 0;
 		margin-bottom: 20px;
 		clear: both
 	}
-
 	.layui-form-item .layui-inline:after {
 		content: '\20';
 		clear: both;
 		display: block;
 		height: 0
 	}
-
 	.layui-form-item .layui-input-inline {
 		display: block;
 		float: none;
@@ -2211,16 +2188,13 @@ body .layui-util-face .layui-layer-content {
 		width: auto;
 		margin: 0 0 10px 112px
 	}
-
 	.layui-form-item .layui-input-inline+.layui-form-mid {
 		margin-left: 110px;
 		top: -5px;
 		padding: 0
 	}
-
 	.layui-form-item .layui-form-checkbox {
 		margin-right: 5px;
 		margin-bottom: 5px
 	}
-
 }
