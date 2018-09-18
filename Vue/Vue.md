@@ -1604,6 +1604,152 @@ HTML部分：
                 }
             },
             router:router2 // 注入路由
-        });
+        });7与咩咩咩咩咩咩咩咩咩咩咩咩咩咩咩咩模块，，，，，，
 ```
 ###14.2.4 路由结合动画；
+略
+### 14.3 单文件组件；
+####14.3.1 .vue文件
+`.vue`文件称为单文件组件，是`vue.js`自定义的一种文件格式，一个`.vue`文件就是一个组件，
+在文件内部封装了组件相关的代码：html,css,js；
+也就是说`.vue`文件由三部分组成：`template` ,`style`,`script`,标准的模板是：
+``` html
+    <template>
+        html代码
+    </template>
+
+    <style>
+        css代码
+    </style>
+
+    <script>
+        js代码
+    </script>
+```
+####14.3.2 vue-loader
+但是浏览器并不认识`.vue`文件，所以必须对该文件进行加载和解析；此时需要`vue-loader`,
+类似的loader还有很多，如：`html-loader`(加载并识别单文件组件中的html代码),`style-loader`（同理）,`babel-loader`(同理)等；
+`vue-loader`是属于`webpack`的，所以你如果想要用webpack，就先要使用并安装webpack；
+####14.3.3 webpack
+一个前端资源模块化加载器和打包工具，它能够把前端的各种资源都作为模块来使用和处理，webpack也是通过不同的loader将资源进行打包和输出打包后的文件；
+总而言之，webpack就是一个模块加载器，所有的资源都作为模块来加载<font color = red>【在webpack的眼中万物皆模块】</font>，最后打包输出；
+[官网](http://www.webpack.io/)；
+webpack有一个核心配置文件，webpack.config.js,必须放在项目的根目录下（跟文件夹的一级菜单）
+####14.3.4 事例和步骤
+1. 创建项目，目录结构如下:
+webpack-demo
+    |--index.html（s）
+    |--package.json 工程文件（不用自己创建，系统会生成）
+    |--webpack.config.js  webpack配置文件
+    |--babel.lrc babel配置文件 （es6才有）
+    |--.eslintignore 忽略eslint的对那些（类型）文件的规范检测；
+    |--static 文件夹（静态资源文件夹）
+    |--config 文件夹（配置信息文件夹）
+    |--build文件夹（操作文件）
+    |--src文件夹（主要编写代码的地方）
+        |--main.js 入口文件
+....创建以上文件，其中
+> `package.json`文件一般是在根目录下使用 node命令`npm init --yes`来创建
+1. 编写App.vue文件
+   ......
+2. 安装相关的模块（加载器,在根目录），用来识别`.vue`文件中的`html`,`js`和`css`;
+   最好使用`cnpm`安装 在`npm`中安装`cnpm`的命令是`npm install -g cnpm --registry=https://registry.npm.taobao.org`
+* `npm install vue -S`;  // vue的生产依赖(生产的时候需要存在的)【基本核心，引用vue.js的时候有用】
+* `cnpm install webpack -D` // 基本开发依赖【基本】
+* `cnpm install webpack-dev-server -D` webpack静态服务器【基本】
+  <!-- loader部分 -->
+* `cnpm install vue-loader -D`//【vue加载器】
+* `cnpm install vue-html-loader -D`//【识别vue文件中html部分的加载器】
+* `cnpm install css-loader -D`//【识别vue文件中css部分的加载器】
+* `cnpm install vue-style-loader -D`//【识别vue文件中style部分的加载器】
+* `cnpm install file-loader -D`//【文件资源，字体，图片等】
+* `cnpm install vue-template-compiler -D` //【预编译template模板】
+  <!-- ES6部分的loader（使用es6的时候要装） -->
+* `cnpm install babel-loader -D`
+* `cnpm install babel-core -D`
+* `cnpm install babel-preset-env -D` //【根据配置的运行环境，自动启用需要的babel插件】
+4. 编写入口文件main.js
+...
+5. 编写webpack.config.js
+6. 编写.babelrc文件
+7. 编写package.json文件
+8. 运行测试
+    在 node 的命令中来到项目的根目录下，执行`npm run dev`(并不一定是dev,这个`dev`来自于package.json)
+<hr>
+
+###14.4 Vue-cli脚手架（3.0）；
+####14.4.1 简介
+vue-cli是一个Vue脚手架，可以快速构造项目结构；
+vue-cli本身集成了多种项目的模板：
+####14.4.2 根据网上的一些教程初始化项目
+1.  `npm install -g @vue/cli` 全局安装 vue-cli 3.0;
+2.  `vue create <project-name>` 创建项目，包括一系列配置项，具体可以参考[vue-cli 3.0配置](https://juejin.im/entry/5ac1c540f265da237c690faf)和[vue-cli 3.0 配置](https://juejin.im/post/5ad862c95188252eb3237752)
+3.  自己手动在项目的根目录创建一个`vue.config.js`,参考配置项文章[vue.config.js配置模板](https://juejin.im/post/5ad862c95188252eb323775
+5. `npm run serve`运行项目
+6. `(c)npm run build` 构建项目
+###14.5 模块化开发；
+####14.5.1 安装 vue-router路由，模块化（vue-cli 3.0 已经在`src/main.js`里面集成并且引用）;
+
+####14.5.2路由在模块开发中的应用
+> 1. 文件夹 `components`中创建和编辑所有的单文件组件；
+> 2. 根目录下的`router.js`文件是一个路由配置文件，基础的配置工作已经做好了
+> 3. 使用`import`导入文件（模块）的时候符号`./`表示在当前目录下;例如：`import abc from path文件`你可以理解为将path文件作为一个名为abc（名字可以自定义）的模块引用过来，以后就abc就代表path文件了，引用abc相当于引用该文件；注意引用过来只是拿过来了
+1. 编辑`App.vue`组件，配置`router-link`路由；
+2. 在`components`文件夹下创建（编辑）单文件组件
+3. 在`router.js`文件中配置路由
+####14.5.3 axios在模块化开发中的应用
+1. 安装axios；
+    cnpm install axios
+    使用axios的两种方式：
+        1. 在每一个使用axios的单文件组件中，引入axios；
+            在组件中使用`import axios form axios`来引入axios模块；
+            然后在正常那样使用axios；
+            例如：
+``` javascript
+    import axios from 'axios';// 引入axios
+    export default {
+        methods: {
+            sendAjax:function () {
+                axios.get()
+            }
+        }
+    };
+```
+2. 在全局引入axios
+    在`main.js`文件中全局引入`axios`;并添加到Vue的原型中
+    `import axios from axios`；
+    `Vue.prototype.axios = axios`;此时axios是作为Vue对象的全局方法而出现的；
+``` javascript
+    export default {
+        methods: {
+            sendAjax:function () {
+                //这里的this就是vue组件本身
+                this.axios.get()
+            }
+        }
+    };
+```
+
+####14.5.4 为自定义组件添加事件；
+> <font color = red >component文件夹中的每一个`.vue`文件都是独立的组件,那么怎么将其中的一个组件作为另一个组件的子组件呢?
+>其实很简单：首先在你指定的父组件文件中，引入该子组件：`import name form ‘子组件路径’`，这样做只是将该组件引过来了，若想作为子组件，那么必须将其注册为子组件（通过父组件中的components选项）注册，然后在父组件的template中使用该子组件；
+> </font>
+>  每一个单文件组件中的`export`就相当于该组件本身---在其内部存储着组件的数据，方法，子组件注册等等选项
+例如：
+``` javascript
+    import button from './components/button'; //引入组件,路径要写对
+    export default {
+        //将引用过来的组件注册为本组件的子组件
+        components: {
+        'my-button':button
+        }
+    }
+```
+###14.6 Element UI
+####14.6.1 简介
+饿了么团队提供的一套基于Vue2.0的前端框架,PC端是Element，移动端是MintUI
+####14.6.2 快速上手
+1. 安装Element ui；
+`cnpm install element-ui -S`
+2. 在main.js文件中引如并使用组件；
+3.
