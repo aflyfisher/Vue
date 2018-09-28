@@ -1696,6 +1696,7 @@ vue-cli本身集成了多种项目的模板：
 > 3. 使用`import`导入文件（模块）的时候符号`./`表示在当前目录下;例如：`import abc from path文件`你可以理解为将path文件作为一个名为abc（名字可以自定义）的模块引用过来，以后就abc就代表path文件了，引用abc相当于引用该文件；注意引用过来只是拿过来了
 1. 编辑`App.vue`组件，配置`router-link`路由；
 2. 在`components`文件夹下创建（编辑）单文件组件
+   每一个单文件组件分为三部分`template`,`style`,和`script`,其中`script`中一般要有`export default {...}`里面中的`...`表示的是当前组件的一些选项：data，事件，方法等
 3. 在`router.js`文件中配置路由
 ####14.5.3 axios在模块化开发中的应用
 1. 安装axios；
@@ -1734,7 +1735,7 @@ vue-cli本身集成了多种项目的模板：
 > <font color = red >component文件夹中的每一个`.vue`文件都是独立的组件,那么怎么将其中的一个组件作为另一个组件的子组件呢?
 >其实很简单：首先在你指定的父组件文件中，引入该子组件：`import name form ‘子组件路径’`，这样做只是将该组件引过来了，若想作为子组件，那么必须将其注册为子组件（通过父组件中的components选项）注册，然后在父组件的template中使用该子组件；
 > </font>
->  每一个单文件组件中的`export`就相当于该组件本身---在其内部存储着组件的数据，方法，子组件注册等等选项
+>  每一个单文件组件中的`export default {...}`就相当于该组件本身---在其内部存储着组件的数据，方法，子组件注册等等选项
 例如：
 ``` javascript
     import button from './components/button'; //引入组件,路径要写对
@@ -1752,4 +1753,133 @@ vue-cli本身集成了多种项目的模板：
 1. 安装Element ui；
 `cnpm install element-ui -S`
 2. 在main.js文件中引如并使用组件；
-3.
+``` javascript
+    import elementUI from 'element-ui'; // 引入的是js文件
+    import 'element-ui/lib/theme-chalk/index.css'; //css文件需要单独引用
+    Vue.use(elementUI);
+```
+>在Vue-cli3.0中，初始化的时候只需要上述操作就可以完整引用element-ui的全部内容(css/js)了,不需要其他的配置，以后的工作就是使用element上的组件即可
+### 14.7 全局组件；
+全局组件（插件），就是可以在`main.js`中使用`Vue.use()`进行全局引入，然后其他组件中就都可以使用了，如`vue-router`;
+import VueRouter from 'vue-router';
+Vue.use(VueRouter);
+普通组件（插件）：每次使用的时候都要引入，比如`axios`;
+import axios form axios;
+####14.7.1 定义全局组件并使用
+1. 在`components`文件夹下，新建一个文件夹，然后在该文件夹下创建Vue组件,例如`user.vue`；
+2. 在当前文件夹下新建一个`.js`文件；在该`js`文件中,如`user.js`
+``` javascript
+    // 引入组件,因为是当前文件夹下的user.vue组件
+    import user from './user.vue';
+    // 导出
+    export default {
+        install:function (Vue) {
+            // 这里的user是上面引入的user组件；username是一个全局组件的组件名，可以随便定义
+            Vue.component('username',user);
+        }
+    };
+```
+3. 在main.js中使用`import`引入当前自定义的全局组件,并使用之
+`import username1 from './components/user/user.js'`;
+`Vue.use(username1)`;
+4. 以后就可以直接在任何一个组件中使用`username1`模块了
+###14.8 Vuex；
+####14.8.1 简介
+简单来说就是用来集中管理数据，项目比较简单的时候没必要用，当项目比较大的时候，用起来比较方便，类似于react中的redux，都是基于Flux的前端状态管理框架
+####14.8.2 基本用法
+1. 安装Vuex，在vue-cli 3.0中在项目初始化的时候，Vuex已经安装了(在package.json中可以看到)
+2. 创建`store.js`文件，并在入口文件`main.js`文件中导入`import`该文件，然后在根实例中配置store选项（vue-cli3.0已经做好了）,配置:
+``` javascript
+    new Vue({
+        router,// 相当于 router：router
+        store, // 同上,相当于：store：store，Vue会将store对象注入到所有的子组件当中，在子组件中通过this.$store来访问该对象
+        ...
+    })
+```
+3. 理解Vuex的工作原理
+   ![Vuex原理图](img/vuex.png)
+> 个人理解：`dispatch`派遣，首先是通过操作组件来抛出一个动作比如点击事件等，来触发一个定义在`actions`里面的方法（或动作），在该方法中的主要作用是提交`commit`一个变化（mutation）,然后由`mutation`选项中来改变数据，然后再次渲染组件；
+4. 编辑`store.js`文件;
+Vuex的核心是Store（仓库），相当于是一个容器，一个store实例中包含以下属性和方法：
+* state    定义属性（状态，数据）,是一个对象，也就是定义和存储数据（状态）的地方
+* getters 获取属性的
+* actions 用来定义要执行的操作方法（动作）,流程的判断（if-else），ajax请求等，不能在这里直接操作数据。
+* 都在这里定义通过commit 提交变化（修改数据的唯一方法就是显式提交 mutation（通过commit）），根据Vuex工作原理，该步骤会提交一个变化给mutations
+* mutations ，处理（操作）状态（数据），具体要执行的动作
+> 不能直接在actions中修改数据，必须显式的提交变化，目的是为了追踪数据的变化
+> 其实在vue-cli 3.0 中 在项目初始化的时候已经配置好了该文件（只是模板配置，基本工作已经做好）
+1. 在子组件中访问store对象的两种方法：
+   方式一： 通过`this.$store`访问，这里的`this`指的是Vue组件实例本身；
+   方式二：通过`mapGetters`,`mapActions`,vuex提供了两种方法：
+            mapState：获取state；
+            mapGetters：获取getters；
+            mapActions:获取方法actions；
+    怎么使用mapGetters？（其他相同）
+    a. 首先在单文件组件中引入一个模块：`import { mapGetters } from "vuex"`;
+    b. 在`store.js`中的输出中添加一个`getters`选项，
+    c. 在单文件组件中的计算属性中引用
+单文件组件中：
+``` javascript
+    // 数组中的num就是store.js中getters选项中的num函数
+    computed:mapGetters([
+      'num'
+    ])
+```
+store.js中配置：
+``` javascript
+    state:{
+        num:1
+    },
+     getters:{
+        // 这里的state 就是上面的state对象
+        num:function (state) {
+            return state.num;
+        }
+    },
+```
+Vuex作为专门管理数据和状态的技术，自然操作数据的方法也是在Vuex管理的，所以---
+``` javascript
+    export default new Vuex.Store({
+        state: {
+            num:1
+        },
+        getters:{
+            // 这里的state 就是上面的state对象
+            num:function (state) {
+            return state.num;
+            }
+        },
+        actions: {
+            add:function (params) {
+                params.commit('increment');
+            // 提交一个名为increment（名字随意）的变化，名称可以自定义，提交到了mutations
+            }
+        },
+        // mutations处理数据的改变,具体要在执行什么动作
+        mutations:{
+            // 这里的increment来自于上面的自定义increment
+            increment:function (state) {
+                state.num++;
+            }
+        }
+    });
+```
+在对应的单文件组件中：
+``` javascript
+    methods:mapActions([
+        // 来源于store.js中actions选项中定义的add；
+      'add'
+    ]),
+```
+####14.8.3 更好的组织Vuex结构
+|-src
+    |-store
+        |-index.js //公共模块
+        |-getters.js
+        |-actions.js
+        |-mutations.js
+        |-modules //根据业务，分为多个模块，每个模块都可以拥有自己的state，actions，actions，mutations
+            |-user.js
+            |-cart.js
+            |-goods.js
+            |-...
